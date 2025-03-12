@@ -50,6 +50,8 @@ The second dataset `interactions` contains user interactions with recipes, inclu
 
 ## Data Cleaning and Exploratory Data Analysis
 
+### Data Cleaning
+
 To prepare the dataset for analysis, a series of data cleaning and transformation steps were performed. These steps ensure that the data is structured correctly, missing values are handled appropriately, and relevant features are extracted for further analysis.
 
 **1. Merging Recipes and Ratings & Handling Missing Values**  
@@ -70,9 +72,10 @@ To analyze the impact of fat content on ratings, the nutrition data was processe
   - `prop_saturated_fat`: 20g daily value, 1g = 9 kcal  
   - `prop_sugar`: 50g daily value, 1g = 4 kcal  
   - `prop_sodium`: Converted from PDV to decimal form  
-  - `prop_carbohydrates`: 275g daily value, 1g = 4 kcal  
-  The original PDV-based columns were dropped after these transformations.  
-
+  - `prop_carbohydrates`: 275g daily value, 1g = 4 kcal
+  
+  The original PDV-based columns were dropped after these transformations.
+  
 - **Identifying and Removing Invalid Entries**:  
   Entries where `saturated fat (PDV) > total fat (PDV)` were removed, as saturated fat cannot exceed total fat. Similarly, recipes where `total fat (PDV) = 0` but `saturated fat (PDV) > 0` were also removed. A total of 233 invalid entries were dropped.  
 
