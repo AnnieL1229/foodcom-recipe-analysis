@@ -86,11 +86,42 @@ To analyze the impact of fat content on ratings, the nutrition data was processe
   Recipes were categorized based on fat-derived calorie proportions:  
   - `is_high_fat`: **1** if total fat proportion is above the dataset mean, otherwise **0**.  
   - `is_high_saturated_fat`: **1** if saturated fat proportion is above the dataset mean, otherwise **0**.  
-  This classification helps analyze how both total fat and saturated fat influence user ratings.  
+This classification helps analyze how both total fat and saturated fat influence user ratings.  
 
 **3. Extracting Time Features**
 
 To enable time-based analysis, the `submitted` column was converted to **datetime format**, and two new features, `year` and `month`, were extracted. Since the exact submission date was no longer needed, the `submitted` column was dropped. These time features allow for trend analysis, such as examining changes in recipe ratings or fat content over time.  
+
+**4. Final Data Cleaning**
+
+After processing the necessary transformations, a subset of relevant columns was selected for the final cleaned dataset. The selection focused on key attributes related to **recipe complexity, nutritional composition, fat-related properties, and user ratings**. The `year` and `month` features replaced the original `submitted` column to enable time-based analysis. This final dataset ensures that only the most relevant features are retained for further analysis.  
+
+### Result  
+
+Here are the columns of the cleaned dataframe:
+
+| Column                 | Description                              |
+|------------------------|------------------------------------------|
+| `'id'`                | int64 (recipe ID)                        |
+| `'minutes'`           | int64 (time to prepare the recipe)       |
+| `'year'`              | int64 (year the recipe was submitted)    |
+| `'month'`             | int64 (month the recipe was submitted)   |
+| `'n_steps'`           | int64 (number of steps in the recipe)    |
+| `'n_ingredients'`     | int64 (number of ingredients used)       |
+| `'calories (#)'`      | float64 (total calories in the recipe)   |
+| `'prop_protein'`      | float64 (proportion of protein calories) |
+| `'prop_total_fat'`    | float64 (proportion of total fat calories) |
+| `'prop_saturated_fat'` | float64 (proportion of saturated fat calories) |
+| `'prop_sugar'`        | float64 (proportion of sugar calories)   |
+| `'prop_carbohydrates'` | float64 (proportion of carbohydrate calories) |
+| `'prop_sodium'`       | float64 (proportion of sodium)           |
+| `'sat_fat_ratio'`     | float64 (ratio of saturated fat to total fat) |
+| `'is_high_fat'`       | int64 (1 if fat proportion is above the dataset mean, else 0) |
+| `'is_high_saturated_fat'` | int64 (1 if saturated fat proportion is above the dataset mean, else 0) |
+| `'avg_rating'`        | float64 (average rating of the recipe)   |
+| `'description'`       | object (text description of the recipe)  |
+
+This cleaned dataset is now ready for **further analysis** to explore the relationship between fat content and user ratings.
 
 
 
