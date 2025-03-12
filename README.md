@@ -18,8 +18,6 @@ In this study, I analyze data [Food.com](https://www.food.com) to **explore the 
 
 To conduct this analysis, I utilize two datasets from Food.com, containing recipes and user ratings since 2008. These datasets were originally compiled for the research paper [*Generating Personalized Recipes from Historical User Preferences* by Majumder et al.](https://cseweb.ucsd.edu/~jmcauley/pdfs/emnlp19c.pdf). which focused on recommender system applications. By leveraging these data, I seek to uncover trends in user preferences and gain insights into how fat content and fat quality influence recipe ratings.
 
-### Dataset Overview
-
 The first dataset `recipes` contains information about recipes, including their names, preparation time, nutritional content, and user-contributed descriptions. It contains 83782 rows(representing 83782 unique recipes), with 12 columns recording the following information:
 
 | Column          | Description  |
@@ -39,8 +37,6 @@ The first dataset `recipes` contains information about recipes, including their 
 
 The second dataset `interactions` contains user interactions with recipes, including ratings and review texts. There are 731,927 rows in total, with 5 columns recording the following information:
 
-#### Relevant Columns and Descriptions:
-
 | Column      | Description  |
 |------------|-------------|
 | `user_id`  | Unique identifier for the user who provided the rating |
@@ -52,48 +48,47 @@ The second dataset `interactions` contains user interactions with recipes, inclu
 
 
 
-## Cleaning and EDA
+## Data Cleaning and Exploratory Data Analysis
 
 To prepare the dataset for analysis, a series of data cleaning and transformation steps were performed. These steps ensure that the data is structured correctly, missing values are handled appropriately, and relevant features are extracted for further analysis.
 
-1. Merging Recipes and Ratings & Handling Missing Values
+**1. Merging Recipes and Ratings & Handling Missing Values**  
 
-- To integrate recipe information with user ratings, the recipes dataset was merged with the interactions dataset using a left join on the recipe ID. This ensures that all recipes remain in the dataset, even if they have not been rated. After merging, some ratings were recorded as 0, which falls outside the valid rating scale of 1 to 5. These zero values likely indicate missing ratings rather than actual user feedback. To prevent distortion in the analysis, all 0 ratings were replaced with missing values (NaN). Since a recipe can receive multiple ratings from different users, an average rating per recipe was calculated by grouping the dataset by recipe ID and computing the mean rating. This aggregated rating was then merged back into the recipes dataset, preserving all recipe attributes while incorporating the average rating. Recipes that had never been rated remained in the dataset with a missing value for average rating.
+To integrate recipe information with user ratings, the recipes dataset was merged with the interactions dataset using a left join on the recipe ID, ensuring all recipes remain in the dataset even if unrated. Some ratings were recorded as 0, which falls outside the valid range of 1 to 5 and likely represents missing values. To prevent distortion, all 0 ratings were replaced with NaN. Since recipes can receive multiple ratings, an average rating per recipe was calculated and merged back into the recipes dataset, preserving all attributes while incorporating the average rating. Unrated recipes retained a missing value for average rating.  
 
-2. Nutrition Processing and Macronutrient Proportions  
+**2. Nutrition Processing and Macronutrient Proportions**
 
-To analyze the impact of fat content on recipe ratings, the nutrition data was processed, and macronutrient proportions were calculated.
+To analyze the impact of fat content on ratings, the nutrition data was processed, and macronutrient proportions were calculated.  
 
-- Extracting and Cleaning Nutrition Data:  
-  The `nutrition` column originally stored a list of numerical values as a string, making it difficult to analyze. Square brackets were removed, and the column was split into individual features:  
-  `Calories (#)`, `Total fat (PDV)`, `Sugar (PDV)`, `Sodium (PDV)`, `Protein (PDV)`, `Saturated fat (PDV)`, `Carbohydrates (PDV)`.  
-  Each value was converted to a float for numerical operations, and the original `nutrition` column was dropped after extraction.
+- **Extracting and Cleaning Nutrition Data**:  
+  The `nutrition` column, initially stored as a string, was split into separate features: `Calories (#)`, `Total fat (PDV)`, `Sugar (PDV)`, `Sodium (PDV)`, `Protein (PDV)`, `Saturated fat (PDV)`, and `Carbohydrates (PDV)`. Each value was converted to a float, and the original `nutrition` column was dropped.  
 
-- Calculating Macronutrient Proportions:  
-  To standardize nutrient comparisons, macronutrient proportions were calculated relative to total caloric intake. These calculations were performed only for recipes where `calories (#) > 0` to avoid division errors (others were set to 0).  
+- **Calculating Macronutrient Proportions**:  
+  Macronutrient proportions were calculated relative to total caloric intake, ensuring comparisons across recipes. Calculations were performed only for recipes where `calories (#) > 0`, with others set to 0.  
   - `prop_protein`: 50g daily value, 1g = 4 kcal  
   - `prop_total_fat`: 50g daily value, 1g = 9 kcal  
   - `prop_saturated_fat`: 20g daily value, 1g = 9 kcal  
   - `prop_sugar`: 50g daily value, 1g = 4 kcal  
-  - `prop_sodium`: Converted directly from PDV to decimal form  
+  - `prop_sodium`: Converted from PDV to decimal form  
   - `prop_carbohydrates`: 275g daily value, 1g = 4 kcal  
-  Since the PDV-based nutrient columns were no longer needed after the proportions were calculated, they were removed.
+  The original PDV-based columns were dropped after these transformations.  
 
-- Identifying and Removing Invalid Entries:  
-  Entries where `saturated fat (PDV) > total fat (PDV)` were removed because it is impossible for saturated fat to exceed total fat. This likely indicates data errors. Entries where `total fat (PDV) = 0` but `saturated fat (PDV) > 0` were also removed, as a recipe with no fat cannot contain saturated fat. A total of 233 invalid entries were removed to maintain data integrity.  
+- **Identifying and Removing Invalid Entries**:  
+  Entries where `saturated fat (PDV) > total fat (PDV)` were removed, as saturated fat cannot exceed total fat. Similarly, recipes where `total fat (PDV) = 0` but `saturated fat (PDV) > 0` were also removed. A total of 233 invalid entries were dropped.  
 
-- Computing the Proportion of Saturated Fat Relative to Total Fat:  
-  A new feature `sat_fat_ratio` was created to measure the proportion of saturated fat within total fat. If total fat was 0, the ratio was set to 0 to prevent division errors.  This feature helps distinguish whether a recipe's fat content is primarily from saturated sources.  
+- **Computing the Proportion of Saturated Fat Relative to Total Fat**:  
+  A new feature, `sat_fat_ratio`, was created to measure the proportion of saturated fat within total fat. If total fat was 0, the ratio was set to 0 to avoid division errors.  
 
-- Classifying High-Fat and High-Saturated-Fat Recipes:  
-  To differentiate recipes based on fat content:  
-  - `is_high_fat`: Assigned **1** if the **total fat proportion** is **above the dataset mean**, otherwise **0**.  
-  - `is_high_saturated_fat`: Assigned **1** if the **saturated fat proportion** is **above the dataset mean**, otherwise **0**.  
-  This classification helps analyze how both total fat and saturated fat content influence user ratings. 
+- **Classifying High-Fat and High-Saturated-Fat Recipes**:  
+  Recipes were categorized based on fat-derived calorie proportions:  
+  - `is_high_fat`: **1** if total fat proportion is above the dataset mean, otherwise **0**.  
+  - `is_high_saturated_fat`: **1** if saturated fat proportion is above the dataset mean, otherwise **0**.  
+  This classification helps analyze how both total fat and saturated fat influence user ratings.  
 
-3. Extracting Time Features  
+**3. Extracting Time Features**
 
-- To enable time-based analysis, the `submitted` column was converted to **datetime format**, allowing for easier extraction of relevant time components. From this, two new features, `year` and `month`, were created to capture when each recipe was submitted. Since the exact submission date was no longer necessary, the original `submitted` column was dropped after extracting these features. These time-based attributes allow for potential trend analysis, such as examining changes in recipe ratings or fat content over time.
+To enable time-based analysis, the `submitted` column was converted to **datetime format**, and two new features, `year` and `month`, were extracted. Since the exact submission date was no longer needed, the `submitted` column was dropped. These time features allow for trend analysis, such as examining changes in recipe ratings or fat content over time.  
+
 
 
 <iframe src="assets/10-80-enrollment.html" width=800 height=600 frameBorder=0></iframe>
