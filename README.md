@@ -172,8 +172,8 @@ Our analysis of low-fat and high-fat recipes shows that **recipes with more fat 
 
 <iframe
   src="graphs/high_low_fat_rating_boxplot.html"
-  width="800"
-  height="600"
+  width="700"
+  height="500"
   frameborder="0"
 ></iframe>
 
