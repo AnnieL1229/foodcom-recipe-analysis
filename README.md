@@ -39,17 +39,17 @@ The second dataset `interactions` contains user interactions with recipes, inclu
 | `user_id`  | Unique identifier for the user who provided the rating |
 | `recipe_id` | Unique identifier for the recipe being rated |
 | `date`      | Date when the rating was submitted |
-| `rating`    | Rating given by the user (typically on a 1-5 scale) |
+| `rating`    | Rating given by the user |
 | `review`    | Text review provided by the user |
 
 
 
 
-## Data Cleaning and Exploratory Data Analysis
+## Data Cleaning and Exploratory Data Analysis (EDA)
 
 ### Data Cleaning
 
-To prepare the dataset for analysis, a series of data cleaning and transformation steps were performed. These steps ensure that the data is structured correctly, missing values are handled appropriately, and relevant features are extracted for further analysis.
+To prepare the dataset for analysis, a series of data cleaning and transformation steps were performed. 
 
 **1. Merging Recipes and Ratings & Handling Missing Values**  
 
@@ -91,7 +91,7 @@ To enable time-based analysis, the `submitted` column was converted to **datetim
 
 **4. Final Data Cleaning**
 
-After processing the necessary transformations, a subset of relevant columns was selected for the final cleaned dataset. The selection focused on key attributes related to **recipe complexity, nutritional composition, fat-related properties, and user ratings**. The `year` and `month` features replaced the original `submitted` column to enable time-based analysis. This final dataset ensures that only the most relevant features are retained for further analysis.  
+After processing the necessary transformations, a subset of relevant columns was selected for the final cleaned dataset. The selection focused on key attributes related to recipe complexity, nutritional composition, fat-related properties, and user ratings.  
 
 ### Result  
 
@@ -119,7 +119,7 @@ Here are the columns of the cleaned dataframe:
 | `'description'`       | Text description of the recipe (object)  |
 
 
-This cleaned dataset is now ready for further analysis to explore the relationship between fat content and user ratings. Our cleaned dataframe consists of **82,789 rows and 18 columns**. Below is a preview of the first five unique recipes. Scroll right to view more columns.  
+This cleaned dataset is now ready for further analysis to explore the relationship between fat content and user ratings. Our cleaned dataframe consists of **82,789 rows and 18 columns**. Below is a preview of the first five rows. 
 
 <div style="overflow-x: auto; white-space: nowrap;">
 
@@ -139,7 +139,7 @@ To understand the distribution of key variables, I analyzed **total fat proporti
 
 **1. Distribution of Total Fat Proportion**
 
-The histogram below shows the distribution of **total fat proportion**, representing the proportion of calories derived from fat. Most recipes have a fat proportion between **0.2 and 0.5**, with some containing minimal fat and a few having high fat content. The boxplot highlights a few outliers, where certain recipes have unusually high fat-derived calorie proportions.
+The histogram below shows the distribution of **total fat proportion**, representing the proportion of calories derived from fat. Most recipes have a fat proportion between **0.2 and 0.5**. The boxplot highlights a few outliers, where certain recipes have unusually high fat-derived calorie proportions.
 
 <iframe
   src="graphs/prop_total_fat_distribution.html"
@@ -150,7 +150,7 @@ The histogram below shows the distribution of **total fat proportion**, represen
 
 **2. Distribution of Saturated Fat Ratio**
 
-The histogram below shows the **saturated fat ratio**, which measures the proportion of total fat that comes from saturated sources. A ratio of **0** can indicate:
+The histogram below shows the distribution of **saturated fat ratio**, which measures the proportion of total fat that comes from saturated sources. A ratio of **0** can indicate:
 - The recipe **contains no fat at all** (total fat = 0).  
 - The recipe contains fat, but **none of it is saturated fat** (only unsaturated fats).  
 
@@ -159,7 +159,7 @@ There are two peaks:
 - **High saturated fat (0.8+):** Likely due to butter, cream, or deep-fried foods.  
 
 <iframe
-  src="saturated_fat_ratio_distribution.html"
+  src="graphs/saturated_fat_ratio_distribution.html"
   width="800"
   height="600"
   frameborder="0"
@@ -170,7 +170,7 @@ There are two peaks:
 The histogram of **recipe ratings** shows a strong skew toward high ratings, with a majority of ratings clustering around **5**. While lower ratings exist, they are much less frequent. This suggests a positive bias in user reviews, where most users tend to rate recipes favorably. 
 
 <iframe
-  src="recipe_ratings_distribution.html"
+  src="graphs/recipe_ratings_distribution.html"
   width="800"
   height="600"
   frameborder="0"
@@ -178,33 +178,33 @@ The histogram of **recipe ratings** shows a strong skew toward high ratings, wit
 
 ### Bivariate Analysis: Fat Content and Recipe Ratings  
 
-The analysis of **low-fat vs. high-fat recipes** reveals that **higher fat content is associated with slightly higher ratings**. While both categories have a median rating close to 5, high-fat recipes tend to have **fewer low-rated recipes**, suggesting that fat contributes positively to user satisfaction. This aligns with the idea that fat enhances flavor and texture, making recipes more enjoyable. 
+Our analysis of low-fat and high-fat recipes shows that **recipes with more fat tend to receive slightly higher ratings**. Both types of recipes have a median rating close to 5, meaning most recipes are rated well. However, low-fat recipes have more low ratings compared to high-fat recipes. This suggests that fat might help improve flavor and texture, making dishes more enjoyable for users
 
 <iframe
-  src="high_low_fat_rating_boxplot.html"
+  src="graphs/high_low_fat_rating_boxplot.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
 
 <iframe
-  src="high_low_fat_mean_rating_bar.html"
+  src="graphs/high_low_fat_mean_rating_bar.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
 
-Similarly, **high-saturated-fat recipes** exhibit slightly higher average ratings than low-saturated-fat ones. This suggests that saturated fat, commonly found in butter and cream-based dishes, may enhance taste perception and appeal. This insight highlights a potential trade-off between health and taste, where users may prioritize enjoyment over healthfulness when rating recipes.
+Similarly, **high-saturated-fat recipes exhibit slightly higher average ratings** than low-saturated-fat ones. This suggests that saturated fat, commonly found in butter and cream-based dishes, may enhance taste perception and appeal. This insight highlights a potential trade-off between health and taste, where users may prioritize enjoyment over healthfulness when rating recipes.
 
 <iframe
-  src="high_low_sat_fat_rating_boxplot.html"
+  src="graphs/high_low_sat_fat_rating_boxplot.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
 
 <iframe
-  src="high_low_sat_fat_mean_rating_bar.html"
+  src="graphs/high_low_sat_fat_mean_rating_bar.html"
   width="800"
   height="600"
   frameborder="0"
@@ -225,10 +225,10 @@ To explore how recipe complexity relates to fat content, we grouped recipes by *
 | 23        | 0.33                    | 0.34                      | 0.0                     | 0.76                    |
 
 
-The line plot below confirms a **positive correlation between the number of steps and fat proportion**. The sharp increase in fat content for **recipes with 2–5 steps** suggests that moderately complex recipes often incorporate additional fat sources.These findings highlight that **longer, more involved recipes often favor taste and richness over lower-fat alternatives**, which can be useful for predicting fat content based on recipe complexity.
+The line plot below confirms a **positive correlation between the number of steps and fat proportion**. The sharp increase in fat content for recipes with 2–5 steps suggests that moderately complex recipes often incorporate additional fat sources.
 
 <iframe
-  src="nsteps_rating_agg.html"
+  src="graphs/nsteps_rating_agg.html"
   width="800"
   height="600"
   frameborder="0"
@@ -238,15 +238,13 @@ The line plot below confirms a **positive correlation between the number of step
 
 ### Not Missing at Random (NMAR) Analysis
 
-One NMAR example could be the **"description"** column because missing values here are likely intentional rather than random. Since the description is an optional summary rather than essential cooking instructions, users may choose to skip it. A missing description might indicate that the recipe is too simple to require one or that the contributor put minimal effort into the submission. For example, a gourmet dish may have a detailed description highlighting its uniqueness, while a basic recipe may have none at all.
+One NMAR example could be the **"description"** column because missing values here are likely intentional rather than random. Since the description is an optional summary rather than essential cooking instructions, users may choose to skip it. A missing description might indicate that the recipe is too simple to require one or that the contributor put minimal effort into the submission. For example, a gourmet dish may have a detailed description to highlight its uniqueness, while a basic recipe may have none at all.
 
 ### Missingness Dependency
 
-To assess potential biases in the dataset, I explored the missingness of the **"rating"** column. Since user ratings reflect how recipes are perceived, understanding whether missing ratings occur randomly or are influenced by specific factors is crucial. To investigate whether missing ratings (avg_rating) depend on other features, we conducted permutation tests on prop_total_fat and n_steps.
+We explored the missingness of the **"rating"** column. Since user ratings reflect how recipes are perceived, understanding whether missing ratings occur randomly or are influenced by specific factors is crucial. To investigate whether missing ratings (`avg_rating`) depend on other features, we conducted permutation tests on `prop_total_fat` and `n_steps`.
 
 **1. Testing Dependency on `prop_total_fat`**  
-
-To determine whether the missingness of `avg_rating` is related to the fat content of a recipe, I conducted a permutation test using `prop_total_fat`.  
 
 - **Null Hypothesis (H₀):** The missingness of `avg_rating` is independent of `prop_total_fat`.
 - **Alternative Hypothesis (H₁):** The missingness of `avg_rating` depends on `prop_total_fat`, meaning recipes with missing ratings systematically differ in fat content. 
@@ -254,7 +252,7 @@ To determine whether the missingness of `avg_rating` is related to the fat conte
 - **Significance Level:** 0.05
 
 <iframe
-  src="missing_distr_fat.html"
+  src="graphs/missing_distr_fat.html"
   width="800"
   height="600"
   frameborder="0"
@@ -263,17 +261,15 @@ To determine whether the missingness of `avg_rating` is related to the fat conte
 To test this, we performed 1,000 permutations, shuffling the missingness labels and recalculating the difference in mean `prop_total_fat` each time. This created an empirical distribution of differences under the null hypothesis.
 
 <iframe
-  src="MAR_fat.html"
+  src="graphs/MAR_fat.html"
   width="800"
   height="600"
   frameborder="0"
 ></iframe>
 
-The observed difference of 0.0032 (marked by the red vertical line) falls within the expected range under the null distribution. The computed p-value (0.3590) is greater than 0.05, so we fail to reject the null hypothesis. This suggests that there is no strong evidence that missing ratings are systematically related to fat content (`prop_total_fat`).
+The observed difference of 0.0032 (marked by the red vertical line) falls within the expected range under the null distribution. The computed p-value (0.3590) is greater than 0.05, so we **fail to reject the null hypothesis**. This suggests that there is no strong evidence that missing ratings are dependent on fat content (`prop_total_fat`).
 
 **2. Testing Dependency on `n_steps`**
-
-To determine whether the missingness of `avg_rating` is related to the complexity of a recipe, we conducted a permutation test using `n_steps`.  
 
 - **Null Hypothesis (H₀):** The missingness of `avg_rating` is independent of `n_steps`.  
 - **Alternative Hypothesis (H₁):** The missingness of `avg_rating` depends on `n_steps`, meaning recipes with missing ratings systematically differ in the number of steps.  
@@ -281,16 +277,16 @@ To determine whether the missingness of `avg_rating` is related to the complexit
 - **Significance Level:** 0.05  
 
 <iframe  
-  src="missing_distr_nsteps.html"  
+  src="graphs/missing_distr_nsteps.html"  
   width="800"  
   height="600"  
   frameborder="0"  
 ></iframe>  
 
-To test this, we performed **1,000 permutations**, shuffling the missingness labels and recalculating the difference in mean `n_steps` each time. This created an empirical distribution of differences under the null hypothesis.  
+Similarly, we performed 1,000 permutations, shuffling the missingness labels and recalculating the difference in mean `n_steps` each time. 
 
 <iframe  
-  src="MAR_nsteps.html"  
+  src="graphs/MAR_nsteps.html"  
   width="800"  
   height="600"  
   frameborder="0"  
@@ -302,40 +298,40 @@ The observed difference of 89.2767 (marked by the red vertical line) falls far o
 
 Our interest lies in understanding the relationship between fat content and recipe ratings. As observed in our EDA, recipes with higher fat proportions (`prop_total_fat`) tend to have higher ratings, suggesting that users may prioritize taste over health.
 
-Beyond total fat, we also examine fat quality, measured by the saturated fat ratio (`sat_fat_ratio`), which represents the proportion of total fat that comes from saturated sources. Saturated fats, found in butter, cream, and fried foods, contribute to rich flavors and textures—elements often associated with indulgent, well-rated dishes. Our initial analysis showed that recipes with a higher saturated fat ratio also tend to receive higher ratings, further reinforcing the idea that users favor richer, more flavorful meals.
+Beyond total fat, we also examine fat quality, measured by the saturated fat ratio (`sat_fat_ratio`), which represents the proportion of total fat that comes from saturated sources. Saturated fats in ingredients like butter, cream, and fried foods create rich flavors and textures that often characterize indulgent dishes. Our initial analysis showed that recipes with a higher saturated fat ratio also tend to receive higher ratings, further reinforcing the idea that users favor richer, more flavorful meals.
 
-To determine whether these observed differences are statistically significant, we conducted **two hypothesis tests**:  
-1. Testing whether **high-fat recipes (`is_high_fat`)** receive significantly higher ratings than low-fat recipes. (`is_high_fat = 1` if `prop_total_fat` is above the mean)
-2. Testing whether **high-saturated-fat recipes (`is_high_saturated_fat`)** receive significantly higher ratings than low-saturated-fat recipes. (`is_high_saturated_fat = 1` if `sat_fat_ratio` is above the mean) 
+To determine whether these observed differences are statistically significant, we conducted two hypothesis tests:  
+1. Testing whether high-fat recipes (`is_high_fat = 1`) receive significantly higher ratings than low-fat recipes. (`is_high_fat = 1` if `prop_total_fat` is above the mean)
+2. Testing whether high-saturated-fat recipes (`is_high_saturated_fat = 1`) receive significantly higher ratings than low-saturated-fat recipes. (`is_high_saturated_fat = 1` if `sat_fat_ratio` is above the mean) 
 
-Since the true population distribution of ratings is unknown, we use a **permutation test**.  
+Since the true population distribution of ratings is unknown, we use **permutation tests**.  
 
 **Test 1: `is_high_fat` and Recipe Ratings**  
 
-- **Null Hypothesis (H₀):** There is no difference in average ratings between high-fat and low-fat recipes.  
-- **Alternative Hypothesis (H₁):** High-fat recipes receive **higher** ratings than low-fat recipes.  
-- **Test Statistic:** Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
-- **Significance Level:** 0.05  
+- Null Hypothesis (H₀): There is no difference in average ratings between high-fat and low-fat recipes.  
+- Alternative Hypothesis (H₁): High-fat recipes receive **higher** ratings than low-fat recipes.  
+- Test Statistic: Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
+- Significance Level: 0.05  
 
 <iframe  
-  src="HT_fat.html"  
+  src="graphs/HT_fat.html"  
   width="800"  
   height="600"  
   frameborder="0"  
 ></iframe>  
 
-The observed mean difference for high-fat recipes was 0.0349, which is substantially larger than what we would expect under the null hypothesis. The computed p-value is 0.0000, which is well below the significance level of 0.05. Thus, we **reject the null hypothesis**, suggesting statistical evidence that high-fat recipes tend to receive higher ratings than low-fat ones. One possible explanation is that higher-fat recipes often incorporate richer ingredients that enhance flavor, making them more appealing to users.
+The observed mean difference for high-fat recipes was 0.0349, which is substantially larger than what we would expect under the null hypothesis. The computed p-value is 0.0000, which is well below the significance level of 0.05. Thus, we **reject the null hypothesis**, suggesting that high-fat recipes tend to receive higher ratings than low-fat ones. One possible explanation is that higher-fat recipes often incorporate richer ingredients that enhance flavor, making them more appealing to users.
 
 
 **Test 2: `is_high_saturated_fat` and Recipe Ratings**  
 
-- **Null Hypothesis (H₀):** There is no difference in average ratings between high satrated ratio.. and low-fat recipes.  
-- **Alternative Hypothesis (H₁):** High-fat recipes receive **higher** ratings than low-fat recipes.  
-- **Test Statistic:** Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
-- **Significance Level:** 0.05  
+- Null Hypothesis (H₀): There is no difference in average ratings between high satrated ratio and low-fat recipes.  
+- Alternative Hypothesis (H₁): High-fat recipes receive **higher** ratings than low-fat recipes.  
+- Test Statistic: Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
+- Significance Level: 0.05  
 
 <iframe  
-  src="HT_sat_fat.html"  
+  src="graphs/HT_sat_fat.html"  
   width="800"  
   height="600"  
   frameborder="0"  
@@ -356,11 +352,9 @@ Since ratings are highly skewed toward higher values, accuracy alone would not b
 
 ## Baseline Model
 
-Before modeling, missing values in `avg_rating` were imputed with the **mean rating**. Since ratings are heavily skewed toward higher values, imputing with the mean helps preserve the overall distribution while preventing data loss.
-
 We use a **Random Forest Classifier** as our baseline model due to its ability to handle nonlinear relationships and capture feature interactions without extensive preprocessing. The baseline model includes **two quantitative features**: `prop_total_fat` (The proportion of total fat in the recipe), and `sat_fat_ratio` (The proportion of total fat that is saturated fat). Since both features are continuous numerical variables, no additional encoding was required.  
 
-The dataset was split into training (80%) and testing (20%) sets. The Random Forest Classifier** achieved a weighted F1-score of 0.6190. Specifically, F1-score for highly rated recipes (class 1) is 0.77, and F1-score for low-rated recipes (class 0) is 0.21. While this score provides a reasonable baseline, the model struggles with predicting low-rated recipes (class 0) due to class imbalance, leading to a low F1-score for this class.  
+The dataset was split into training (80%) and testing (20%) sets. The Random Forest Classifier achieved a weighted F1-score of 0.6190. Specifically, F1-score for highly rated recipes (class 1) is 0.77, and F1-score for low-rated recipes (class 0) is 0.21. While this score provides a reasonable baseline, the model struggles with predicting low-rated recipes (class 0) due to class imbalance, leading to a low F1-score for this class.  
 
 This suggests that fat content alone is insufficient for accurately predicting ratings. Additional features may improve model performance. Future iterations will explore expanding feature selection and optimizing hyperparameters to enhance predictive accuracy.  
 
@@ -377,7 +371,7 @@ For our final model, we selected the following features based on exploratory dat
   - As observed in the seasonal trend analysis, recipe ratings fluctuate throughout the year (see graph below). Ratings peak during certain months (e.g., spring and early summer), which may reflect seasonal food trends, holiday cooking patterns, or user activity changes. Including `month` allows our model to capture seasonal variations in user preferences.  
 
 <iframe  
-  src="monthly_trends.html"  
+  src="graphs/monthly_trends.html"  
   width="800"  
   height="600"  
   frameborder="0"  
@@ -387,7 +381,7 @@ For our final model, we selected the following features based on exploratory dat
   - Our hypothesis test provided strong evidence that fat content influences ratings, with higher-fat recipes receiving higher ratings. Since fat enhances taste and texture, it is an essential predictor of user preferences.  
 
 - `sat_fat_ratio` (Proportion of Saturated Fat in Total Fat)  
-  - Similar to total fat, our hypothesis test showed that higher saturated fat ratios are associated with higher ratings. Saturated fats (e.g., butter, cream, deep-fried foods) are known for their rich flavor and texture, which may contribute to higher user satisfaction. This feature helps distinguish between different types of fat, allowing the model to capture nuanced user preferences.
+  - Similar to total fat, our hypothesis test showed that higher saturated fat ratios are associated with higher ratings. Saturated fats are known for their rich flavor and texture, which may contribute to higher user satisfaction. This feature helps distinguish between different types of fat, allowing the model to capture nuanced user preferences.
 
 By incorporating these features, our model aims to predict recipe ratings more effectively by leveraging key factors that influence user preferences, including **preparation effort, seasonality, and fat content**.
 
@@ -398,7 +392,7 @@ To enhance our model’s predictive performance, we implemented feature transfor
 - Feature Transformations
   - Cyclic Encoding for `month`: Since `month` represents a cyclical feature (January and December are close), we applied **sine and cosine transformations** to capture seasonal patterns effectively. This prevents incorrect interpretations where December (`month = 12`) is numerically distant from January (`month = 1`).
 
-  - Robust Scaling for Numeric Features: `minutes`, `prop_total_fat`, and `sat_fat_ratio` were **scaled using RobustScaler**, which is resistant to outliers. This ensures that features with different ranges (e.g., time in minutes vs. fat proportions) are on a comparable scale.
+  - Robust Scaling for Numeric Features: `minutes`, `prop_total_fat`, and `sat_fat_ratio` were **scaled using RobustScaler**, which is resistant to outliers. 
 
 - Addressing Class Imbalance with SMOTE
   - Our dataset exhibits imbalance, with significantly more high-rated recipes than low-rated ones. To mitigate this, we used **Synthetic Minority Over-sampling Technique (SMOTE)** to generate synthetic samples for the minority class, improving our model’s ability to predict low-rated recipes.
