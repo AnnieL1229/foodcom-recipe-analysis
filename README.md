@@ -133,8 +133,8 @@ The histogram below shows the distribution of **total fat proportion**, represen
 
 <iframe
   src="graphs/prop_total_fat_distribution.html"
-  width="700"
-  height="500"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
