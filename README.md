@@ -304,10 +304,10 @@ Since the true population distribution of ratings is unknown, we use **permutati
 
 **Test 1: `is_high_fat` and Recipe Ratings**  
 
-- Null Hypothesis (H₀): There is no difference in average ratings between high-fat and low-fat recipes.  
-- Alternative Hypothesis (H₁): High-fat recipes receive **higher** ratings than low-fat recipes.  
-- Test Statistic: Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
-- Significance Level: 0.05  
+- **Null Hypothesis (H₀):** There is no difference in average ratings between high-fat and low-fat recipes.  
+- **Alternative Hypothesis (H₁):** High-fat recipes receive **higher** ratings than low-fat recipes.  
+- **Test Statistic:** Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
+- **Significance Level:** 0.05  
 
 <iframe  
   src="graphs/HT_fat.html"  
@@ -321,9 +321,9 @@ The observed mean difference for high-fat recipes was 0.0349, which is substanti
 
 **Test 2: `is_high_saturated_fat` and Recipe Ratings**  
 
-- **Null Hypothesis (H₀):** There is no difference in average ratings between high satrated ratio and low-fat recipes.  
-- **Alternative Hypothesis (H₁):** High-fat recipes receive **higher** ratings than low-fat recipes.  
-- **Test Statistic:** Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
+- **Null Hypothesis (H₀):** There is no difference in average ratings between high saturated ratio and low saturated ratio recipes.  
+- **Alternative Hypothesis (H₁):** High-saturated-fat recipes receive **higher** ratings than low-saturated-fat recipes.  
+- **Test Statistic:** Difference in mean `avg_rating` between high-saturated-fat (`is_high_sat_fat = 1`) and low-fat (`is_high_sat_fat = 0`) recipes.  
 - **Significance Level:** 0.05  
 
 <iframe  
