@@ -425,7 +425,7 @@ We do not assume in advance whether the model will favor low-calorie or high-cal
 To determine whether the observed difference is statistically significant, we conducted a permutation test with 1,000 iterations. The empirical distribution of permuted differences is shown in the graph below, with the observed difference marked in red.
 
 <iframe  
-  src="fairness_test.html"  
+  src="graphs/fairness_test.html"  
   width="800"  
   height="500"  
   frameborder="0"  
