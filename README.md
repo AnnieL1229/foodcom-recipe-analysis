@@ -1,11 +1,10 @@
-# Food.com Recipe Analysis: xxx
-
-# My Project Title
+# Analyzing the Relationship Between Fat Content and Recipe Ratings
 
 by Yixin Liu (yil165@ucsd.edu)
 
 ## Overview
 
+This report explores the impact of fat content on recipe ratings, combining exploratory data analysis (EDA), hypothesis testing, and predictive modeling. We first investigate whether high-fat and high-saturated-fat recipes receive significantly higher ratings, using statistical tests to validate these patterns. We then frame a classification problem, predicting whether a recipe receives a high rating (≥ 4.5) based on its nutritional and contextual features. A Random Forest model is implemented, with feature engineering, hyperparameter tuning, and fairness analysis to ensure robustness.
 
 ## Introduction
 
@@ -157,8 +156,8 @@ There are two peaks:
 
 <iframe
   src="graphs/saturated_fat_ratio_distribution.html"
-  width="800"
-  height="600"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -168,8 +167,8 @@ The histogram of **recipe ratings** shows a strong skew toward high ratings, wit
 
 <iframe
   src="graphs/recipe_ratings_distribution.html"
-  width="800"
-  height="600"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -179,15 +178,15 @@ Our analysis of low-fat and high-fat recipes shows that **recipes with more fat 
 
 <iframe
   src="graphs/high_low_fat_rating_boxplot.html"
-  width="700"
-  height="500"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
 <iframe
   src="graphs/high_low_fat_mean_rating_bar.html"
-  width="800"
-  height="600"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -195,15 +194,15 @@ Similarly, **high-saturated-fat recipes exhibit slightly higher average ratings*
 
 <iframe
   src="graphs/high_low_sat_fat_rating_boxplot.html"
-  width="800"
-  height="600"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
 <iframe
   src="graphs/high_low_sat_fat_mean_rating_bar.html"
-  width="800"
-  height="600"
+  width="600"
+  height="400"
   frameborder="0"
 ></iframe>
 
@@ -227,7 +226,7 @@ The line plot below confirms a **positive correlation between the number of step
 <iframe
   src="graphs/nsteps_rating_agg.html"
   width="800"
-  height="600"
+  height="500"
   frameborder="0"
 ></iframe>
 
@@ -251,7 +250,7 @@ We explored the missingness of the **"rating"** column. Since user ratings refle
 <iframe
   src="graphs/missing_distr_fat.html"
   width="800"
-  height="600"
+  height="500"
   frameborder="0"
 ></iframe>
 
@@ -276,7 +275,7 @@ The observed difference of 0.0032 (marked by the red vertical line) falls within
 <iframe  
   src="graphs/missing_distr_nsteps.html"  
   width="800"  
-  height="600"  
+  height="500"  
   frameborder="0"  
 ></iframe>  
 
@@ -285,7 +284,7 @@ Similarly, we performed 1,000 permutations, shuffling the missingness labels and
 <iframe  
   src="graphs/MAR_nsteps.html"  
   width="800"  
-  height="600"  
+  height="500"  
   frameborder="0"  
 ></iframe>  
 
@@ -313,7 +312,7 @@ Since the true population distribution of ratings is unknown, we use **permutati
 <iframe  
   src="graphs/HT_fat.html"  
   width="800"  
-  height="600"  
+  height="500"  
   frameborder="0"  
 ></iframe>  
 
@@ -322,15 +321,15 @@ The observed mean difference for high-fat recipes was 0.0349, which is substanti
 
 **Test 2: `is_high_saturated_fat` and Recipe Ratings**  
 
-- Null Hypothesis (H₀): There is no difference in average ratings between high satrated ratio and low-fat recipes.  
-- Alternative Hypothesis (H₁): High-fat recipes receive **higher** ratings than low-fat recipes.  
-- Test Statistic: Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
-- Significance Level: 0.05  
+- **Null Hypothesis (H₀):** There is no difference in average ratings between high satrated ratio and low-fat recipes.  
+- **Alternative Hypothesis (H₁):** High-fat recipes receive **higher** ratings than low-fat recipes.  
+- **Test Statistic:** Difference in mean `avg_rating` between high-fat (`is_high_fat = 1`) and low-fat (`is_high_fat = 0`) recipes.  
+- **Significance Level:** 0.05  
 
 <iframe  
   src="graphs/HT_sat_fat.html"  
   width="800"  
-  height="600"  
+  height="500"  
   frameborder="0"  
 ></iframe>  
 
@@ -362,23 +361,27 @@ This suggests that fat content alone is insufficient for accurately predicting r
 For our final model, we selected the following features based on exploratory data analysis (EDA) and hypothesis testing:
 
 - `minutes`
-  - From our bivariate analysis, recipes that take longer to prepare tend to receive higher ratings. This pattern suggests that users may associate longer preparation times with higher-quality dishes, possibly due to the effort and complexity involved. We expect this feature to positively contribute to our model’s predictive performance.  
+
+From our bivariate analysis, recipes that take longer to prepare tend to receive higher ratings. This pattern suggests that users may associate longer preparation times with higher-quality dishes, possibly due to the effort and complexity involved. We expect this feature to positively contribute to our model’s predictive performance.  
 
 - `month`
-  - As observed in the seasonal trend analysis, recipe ratings fluctuate throughout the year (see graph below). Ratings peak during certain months (e.g., spring and early summer), which may reflect seasonal food trends, holiday cooking patterns, or user activity changes. Including `month` allows our model to capture seasonal variations in user preferences.  
+
+As observed in the seasonal trend analysis, recipe ratings fluctuate throughout the year (see graph below). Ratings peak during certain months (e.g., spring and early summer), which may reflect seasonal food trends, holiday cooking patterns, or user activity changes. Including `month` allows our model to capture seasonal variations in user preferences.  
 
 <iframe  
   src="graphs/monthly_trend.html"  
-  width="800"  
-  height="600"  
+  width="600"  
+  height="400"  
   frameborder="0"  
 ></iframe>  
 
 - `prop_total_fat` (Proportion of Calories from Fat)  
-  - Our hypothesis test provided strong evidence that fat content influences ratings, with higher-fat recipes receiving higher ratings. Since fat enhances taste and texture, it is an essential predictor of user preferences.  
+
+Our hypothesis test provided strong evidence that fat content influences ratings, with higher-fat recipes receiving higher ratings. Since fat enhances taste and texture, it is an essential predictor of user preferences.  
 
 - `sat_fat_ratio` (Proportion of Saturated Fat in Total Fat)  
-  - Similar to total fat, our hypothesis test showed that higher saturated fat ratios are associated with higher ratings. Saturated fats are known for their rich flavor and texture, which may contribute to higher user satisfaction. This feature helps distinguish between different types of fat, allowing the model to capture nuanced user preferences.
+
+Similar to total fat, our hypothesis test showed that higher saturated fat ratios are associated with higher ratings. Saturated fats are known for their rich flavor and texture, which may contribute to higher user satisfaction. This feature helps distinguish between different types of fat, allowing the model to capture nuanced user preferences.
 
 By incorporating these features, our model aims to predict recipe ratings more effectively by leveraging key factors that influence user preferences, including **preparation effort, seasonality, and fat content**.
 
@@ -387,14 +390,17 @@ By incorporating these features, our model aims to predict recipe ratings more e
 To enhance our model’s predictive performance, we implemented feature transformations, class balancing, and hyperparameter tuning.
 
 - Feature Transformations
+
   - Cyclic Encoding for `month`: Since `month` represents a cyclical feature (January and December are close), we applied **sine and cosine transformations** to capture seasonal patterns effectively. This prevents incorrect interpretations where December (`month = 12`) is numerically distant from January (`month = 1`).
 
   - Robust Scaling for Numeric Features: `minutes`, `prop_total_fat`, and `sat_fat_ratio` were **scaled using RobustScaler**, which is resistant to outliers. 
 
 - Addressing Class Imbalance with SMOTE
+
   - Our dataset exhibits imbalance, with significantly more high-rated recipes than low-rated ones. To mitigate this, we used **Synthetic Minority Over-sampling Technique (SMOTE)** to generate synthetic samples for the minority class, improving our model’s ability to predict low-rated recipes.
 
 - Hyperparameter Tuning (GridSearchCV)
+
   - We performed hyperparameter tuning** using **GridSearchCV** to optimize our Random Forest model. The parameters tested included:
     - `n_estimators`: [50, 100, 200] (Number of trees in the forest)  
     - `max_depth`: [5, 10, 20, None] (Tree depth)  
@@ -403,17 +409,26 @@ To enhance our model’s predictive performance, we implemented feature transfor
 
 ### Result
 
-Overall, the weighted F1-score **improved from 0.6190 to 0.6428**. The most notable improvement was in the prediction of low-rated recipes (Class 0), where the recall and F1-score increased from 0.21 to 0.25. The use of SMOTE successfully mitigated the impact of class imbalance, preventing the model from over-prioritizing high-rated recipes.
+Overall, the weighted F1-score **improved from 0.6190 to 0.6278**. The most notable improvement was in the prediction of low-rated recipes (Class 0), where the recall and F1-score increased from 0.21 to 0.28. The use of SMOTE successfully mitigated the impact of class imbalance, preventing the model from over-prioritizing high-rated recipes.
 
-##
+## Fairness Test
 
+To assess whether our model exhibits bias, we compare its performance on **low-calorie** and **high-calorie** recipes. Since `calorie (#)` values vary widely across recipes, we split the dataset at the median to create two equally sized groups. Since our target variable (`binary rating`) is **imbalanced**, with more recipes receiving high ratings than low ratings, accuracy alone is not a reliable metric. Instead, we use the **weighted F1-score**, which accounts for class imbalance by giving more weight to the majority class while still considering minority class performance.
 
+We do not assume in advance whether the model will favor low-calorie or high-calorie recipes. Therefore, we use a **two-sided test** to detect any significant performance difference, regardless of which group is disadvantaged.
 
+- **Null Hypothesis (H₀):** The model performs **equally well** for both low-calorie and high-calorie recipes. Any observed difference in weighted F1-score is due to random variation.
+- **Alternative Hypothesis (H₁):** The model performs **differently** for each group.
+- **Test Statistic:** Difference in weighted F1-score between low-calorie and high-calorie recipes.
+- **Significance Level:** 0.05
 
+To determine whether the observed difference is statistically significant, we conducted a permutation test with 1,000 iterations. The empirical distribution of permuted differences is shown in the graph below, with the observed difference marked in red.
 
+<iframe  
+  src="fairness_test.html"  
+  width="800"  
+  height="500"  
+  frameborder="0"  
+></iframe>  
 
-
-
-
-
-
+The observed weighted F1-score difference between low-calorie and high-calorie recipes is -0.0143, with a p-value of 0.0000, which falls below the 0.05 significance threshold. Thus, we **reject the null hypothesis**. This suggests that our model performs significantly worse on low-calorie recipes compared to high-calorie recipes, indicating **potential bias**. The performance gap may be due to*model reliance on fat content and associated features, which are often higher in calorie-dense recipes.
