@@ -350,7 +350,7 @@ Since ratings are highly skewed toward higher values, accuracy alone would not b
 
 We use a **Random Forest Classifier** as our baseline model due to its ability to handle nonlinear relationships and capture feature interactions without extensive preprocessing. The baseline model includes **two quantitative features**: `prop_total_fat` (The proportion of total fat in the recipe), and `sat_fat_ratio` (The proportion of total fat that is saturated fat). Since both features are continuous numerical variables, no additional encoding was required.  
 
-The dataset was split into training (80%) and testing (20%) sets. The Random Forest Classifier achieved a weighted F1-score of 0.6190. Specifically, F1-score for highly rated recipes (class 1) is 0.77, and F1-score for low-rated recipes (class 0) is 0.21. While this score provides a reasonable baseline, the model struggles with predicting low-rated recipes (class 0) due to class imbalance, leading to a low F1-score for this class.  
+The dataset was split into training (80%) and testing (20%) sets. The Random Forest Classifier achieved a weighted F1-score of 0.7190. Specifically, F1-score for highly rated recipes (class 1) is 0.77, and F1-score for low-rated recipes (class 0) is 0.42. While this score provides a reasonable baseline, the model struggles with predicting low-rated recipes (class 0) due to class imbalance, leading to a low F1-score for this class.  
 
 This suggests that fat content alone is insufficient for accurately predicting ratings. Additional features may improve model performance. Future iterations will explore expanding feature selection and optimizing hyperparameters to enhance predictive accuracy.  
 
@@ -409,7 +409,7 @@ To enhance our model’s predictive performance, we implemented feature transfor
 
 ### Result
 
-Overall, the weighted F1-score **improved from 0.6190 to 0.6278**. The most notable improvement was in the prediction of low-rated recipes (Class 0), where the recall and F1-score increased from 0.21 to 0.28. The use of SMOTE successfully mitigated the impact of class imbalance, preventing the model from over-prioritizing high-rated recipes.
+Overall, the weighted F1-score **improved from 0.7190 to 0.8278**. The most notable improvement was in the prediction of low-rated recipes (Class 0), where the F1-score increased from 0.42 to 0.61. The use of SMOTE successfully mitigated the impact of class imbalance, preventing the model from over-prioritizing high-rated recipes.
 
 ## Fairness Test
 
